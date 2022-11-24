@@ -91,6 +91,7 @@ class TodoController extends Controller
     {
         $deleteTarget = Todo::find($id);
         isset($deleteTarget) ? $deleteTarget->delete() : null;
+        session()->flash('delete', "The To Do With Title '$deleteTarget->title' Has Been Deleted ⚠️");
         return redirect()->back();
     }
 

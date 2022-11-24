@@ -11,6 +11,17 @@
 </head>
 <body>
     
+    {{-- alert start --}}
+    @if(session()->has('delete'))
+        <div class="container">
+            <div class="alert alert-warning alert-dismissible fade show  mt-4" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <h3 class="text-center">{{session('delete')}}</h3>
+            </div>
+        </div>
+    @endif
+    {{-- alert end --}}
+
     {{-- form start --}}
     <div class="container mt-5 ">
         <h1 class="mb-5">Create To Do List</h1>
