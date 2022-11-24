@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; //--------//
+use App\Exports\FileExport; //--------//
+use Maatwebsite\Excel\Facades\Excel; //-------//
 
 class TodoController extends Controller
 {
@@ -11,6 +14,19 @@ class TodoController extends Controller
     public function index()
     {
         $lists = Todo::all();
+        $header = ['id', 'title', 'done', 'img', 'created_at', 'updated_at'];
+        $line =[];
+
+        $f = fopen(public_path('csv/file.csv'), 'w');
+        fputcsv($f, $header);
+
+        foreach($lists as $list){
+            $line = array($list->id, $list->title, $list->done, $list->img, $list->created_at, $list->updated_at);
+            // Storage::disk('csvFile')->put('csv/file.csv', $line);
+            fputcsv($f, $line);
+        }
+        fclose($f);
+
         return view('home',compact('lists'));
     }
 
@@ -24,13 +40,17 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'=>'required'
+            'title'=>'required',
+            'img'=> 'required'
         ]);
 
         $data = $request->all();
         $myData = new Todo;
         $myData->title = $request->title;
+        $myData->img = $request->img;
+
         $myData->save();
+
         return redirect('/');
         
     }
@@ -73,4 +93,5 @@ class TodoController extends Controller
         isset($deleteTarget) ? $deleteTarget->delete() : null;
         return redirect()->back();
     }
+
 }

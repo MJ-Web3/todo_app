@@ -12,13 +12,23 @@
 <body>
     
     {{-- form start --}}
-    <div class="container mt-5">
+    <div class="container mt-5 ">
         <h1 class="mb-5">Create To Do List</h1>
         <form action="{{url('/')}}" method="POST">
             @csrf
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="title" id="todoinput" placeholder="Create New To Do">
-                <label for="todoinput">Create New To Do</label>
+            <div class="row">
+                <div class="col-sm-8 mt-4">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="title" id="todoinput" placeholder="Create New To Do">
+                        <label for="todoinput">Create New To Do</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="mb-3">
+                        <label for="formFileLg" class="form-label">Chose Image File</label>
+                        <input class="form-control form-control-lg" name="img" id="formFileLg" type="file">
+                    </div>
+                </div>
             </div>
             <div>
                 <input type="submit" value="Create" class="btn btn-primary">
@@ -28,8 +38,12 @@
     </div>
     {{-- form end --}}
 
+
     {{-- showing data start --}}
     <div class="container mt-5">
+            <a class="btn btn-primary" href="{{asset('csv/file.csv')}}">Download CSV File</a>
+
+
         @foreach($lists as $list)
         <div class="container mt-5">
             <div class="card text-bg-secondary  mb-3" style="max-width: 100%;">
@@ -38,31 +52,42 @@
                     <h3>This Task Has Be Done In ➡️ {{$list->updated_at}} 👌 ✓</h3>
                 </div>
                 @endif
-                <div class="card-body"><h3>{{$list->title}}</h3></div>
-            {{-- buttons start --}}
-            <div class="d-flex justify-content-end mb-2 me-2">
+                <div class="card-body mt-2">
+                    <div class="row">
+                        <div class="col-md-4"><img class="rounded-circle" src="{{asset('img/debian-linux.png')}}" alt="img" width="100px" height="100px"></div>
+                        <div class="col-md-4"><h3>{{$list->title}}</h3></div>
+                        <div class="col-md-4">
+                            {{-- buttons start --}}
+                        <div class="d-flex justify-content-end mb-2 me-2">
+                            {{-- edit button start --}}
+                            <a href="{{url('/' . $list->id)}}">
+                                <button type="button" class="btn btn-success me-3">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                            </a>
+                            {{-- edit button end --}}
+                            
+                            {{-- delete button start --}}
+                            <form action="{{url('/' . $list->id)}}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </form>
+                            {{-- delete button end --}}
+                        </div>
+                        
+                        {{-- buttons end --}}
+                        </div>
+                    </div>
+                </div>
 
-                <a href="{{url('/' . $list->id)}}">
-                    <button type="button" class="btn btn-success me-3">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </button>
-                </a>
-                
-
-                <form action="{{url('/' . $list->id)}}" method="post">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-danger">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                </form>
-
-            </div>
-            {{-- buttons end --}}
         </div>
         </div>
         @endforeach
     </div>
+
 
 
     {{-- showing data end --}}

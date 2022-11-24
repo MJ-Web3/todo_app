@@ -43,6 +43,22 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+// custom csv file
+        'csvFile' => [
+            'driver' => 'local',
+            'root' => public_path('csv'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+// custom images
+        'images' => [
+            'driver' => 'local',
+            'root' => public_path('img'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,6 @@ Route::post('/', [TodoController::class, 'store']);
 Route::get('/{id}', [TodoController::class, 'edit']);
 Route::delete('/{id}', [TodoController::class, 'destroy']);
 Route::put('/{id}',[TodoController::class, 'update']);
+
+// Route::get('/csv', [TodoController::class, 'export'])->name('export');
+// Route::get('/file', [TodoController::class, 'csvfile']);

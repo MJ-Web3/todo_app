@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->boolean('done')->default(0);
+            $table->string('img');
             $table->timestamps();
         });
     }
