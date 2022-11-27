@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,15 @@
     <title>Home</title>
 </head>
 <body>
-    
+
+    <x-app-layout>
+        <x-slot name="header">
+                {{-- @include('navigation-menu') --}}
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                To Do Page
+            </h2>
+        </x-slot>
+        
     {{-- alert start --}}
     @if(session()->has('delete'))
         <div class="container">
@@ -25,7 +34,7 @@
     {{-- form start --}}
     <div class="container mt-5 ">
         <h1 class="mb-5">Create To Do List</h1>
-        <form action="{{url('/')}}" method="POST">
+        <form action="{{url('todo/')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-sm-8 mt-4">
@@ -65,13 +74,13 @@
                 @endif
                 <div class="card-body mt-2">
                     <div class="row">
-                        <div class="col-md-4"><img class="rounded-circle" src="{{asset('img/debian-linux.png')}}" alt="img" width="100px" height="100px"></div>
+                        <div class="col-md-4"><img class="rounded-circle" src="img/{{$list->img}}" alt="img" width="100px" height="100px"></div>
                         <div class="col-md-4"><h3>{{$list->title}}</h3></div>
                         <div class="col-md-4">
                             {{-- buttons start --}}
                         <div class="d-flex justify-content-end mb-2 me-2">
                             {{-- edit button start --}}
-                            <a href="{{url('/' . $list->id)}}">
+                            <a href="{{url('todo/' . $list->id)}}">
                                 <button type="button" class="btn btn-success me-3">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
@@ -79,7 +88,7 @@
                             {{-- edit button end --}}
                             
                             {{-- delete button start --}}
-                            <form action="{{url('/' . $list->id)}}" method="post">
+                            <form action="{{url('todo/' . $list->id)}}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">
@@ -98,12 +107,15 @@
         </div>
         @endforeach
     </div>
-
-
-
     {{-- showing data end --}}
+
+    </x-app-layout>
+    
+    
+
 
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('js/main.js')}}"></script>
 </body>
 </html>
+

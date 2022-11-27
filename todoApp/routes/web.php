@@ -15,11 +15,26 @@ use App\Http\Controllers\Controller;
 |
 */
 
-Route::get('/', [TodoController::class, 'index']);
-Route::post('/', [TodoController::class, 'store']);
-Route::get('/{id}', [TodoController::class, 'edit']);
-Route::delete('/{id}', [TodoController::class, 'destroy']);
-Route::put('/{id}',[TodoController::class, 'update']);
+Route::get('todo/', [TodoController::class, 'index'])->middleware('auth');
+Route::post('todo/', [TodoController::class, 'store'])->middleware('auth');
+Route::get('todo/{id}', [TodoController::class, 'edit'])->middleware('auth');
+Route::delete('todo/{id}', [TodoController::class, 'destroy'])->middleware('auth');
+Route::put('todo/{id}',[TodoController::class, 'update'])->middleware('auth');
 
 // Route::get('/csv', [TodoController::class, 'export'])->name('export');
 // Route::get('/file', [TodoController::class, 'csvfile']);
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('dashboard/', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
+Route::get('/',function(){
+    return view('welcome2');
+});
+

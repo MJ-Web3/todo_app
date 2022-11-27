@@ -14,7 +14,7 @@
 
     <div class="container mt-5">
     <h1 class="mb-5">Updating To Do List</h1>
-    <form action="{{url('/' . $editList->id)}}" method="POST">
+    <form action="{{url('todo/' . $editList->id)}}" method="POST">
         @csrf
         @method('put')
 

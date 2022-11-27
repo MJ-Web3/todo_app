@@ -6,6 +6,8 @@ use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; //--------//
 use App\Exports\FileExport; //--------//
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel; //-------//
 
 class TodoController extends Controller
@@ -13,7 +15,8 @@ class TodoController extends Controller
 
     public function index()
     {
-        $lists = Todo::all();
+        $user_id = Auth::getUser()->id;
+        $lists = DB::select("SELECT * FROM todos WHERE user_id = $user_id");
         $header = ['id', 'title', 'done', 'img', 'created_at', 'updated_at'];
         $line =[];
 
@@ -47,11 +50,17 @@ class TodoController extends Controller
         $data = $request->all();
         $myData = new Todo;
         $myData->title = $request->title;
-        $myData->img = $request->img;
+        $myData->user_id = Auth::id();
+        // $myData->img = $request->img;
 
+        $image = $request->file('img')->extension();
+        $path = public_path('img');
+        $imgList = date('YmdHms').'.'.$image;
+        $request->img->move($path,$imgList);
+        $myData['img'] = $imgList;
         $myData->save();
 
-        return redirect('/');
+        return redirect('todo/');
         
     }
 
@@ -83,7 +92,7 @@ class TodoController extends Controller
             $editList->done = 0;
         }
         $editList->save();
-        return redirect('/');
+        return redirect('todo/');
     }
 
 

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('done')->default(0);
             $table->string('img');
+            $table->string('user_id');
             $table->timestamps();
         });
     }
